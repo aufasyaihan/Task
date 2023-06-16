@@ -14,7 +14,7 @@ return new class extends Migration {
             $table->id();
             $table->string('judul');
             $table->string('deskripsi');
-            $table->string('status')->default('Incompleted');
+            $table->string('status')->default('Incomplete');
             $table->timestamps();
         });
     }

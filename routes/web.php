@@ -18,6 +18,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 Route::get('task/completed', [taskController::class, 'completed']);
-Route::get('task/incompleted', [taskController::class, 'incompleted']);
+Route::get('task/incomplete', [taskController::class, 'incomplete']);
 Route::resource('task', taskController::class); //ini udah Route CRUD semuanya pak
 Route::put('task/{id}/status', [taskController::class, 'updateStatus']);
