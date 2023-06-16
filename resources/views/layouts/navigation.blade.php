@@ -22,8 +22,8 @@
                     </x-nav-link>
                 </div>
                 <div class="hidden space-x-8 sm:-my-px sm:ml-5 sm:flex">
-                    <x-nav-link :href="url('task/incompleted')" :active="request()->Is('task/incompleted')">
-                        {{ __('Incompleted Task') }}
+                    <x-nav-link :href="url('task/incomplete')" :active="request()->Is('task/incomplete')">
+                        {{ __('Incomplete Task') }}
                     </x-nav-link>
                 </div>
             </div>

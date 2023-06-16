@@ -15,7 +15,7 @@
 @section('content')
     <div class="">
         <div class="w-full md:w-5/6 xl:w-3/4 mx-auto mb-5 mt-3">
-            @if (request()->routeIs('task.index') || request()->Is('task/completed') || request()->Is('task/incompleted'))
+            @if (request()->routeIs('task.index') || request()->Is('task/completed') || request()->Is('task/incomplete'))
                 <div class="py-5">
                     <a class="bg-blue-600 p-3 rounded-lg hover:bg-blue-700 text-white font-bold uppercase text-sm"
                         href="{{ route('task.create') }}">Tambah Task</a>
@@ -32,8 +32,8 @@
                     @if (request()->Is('task/completed'))
                         <p class="text-xl font-bold">Completed Task</p>
                     @else
-                        @if (request()->Is('task/incompleted'))
-                            <p class="text-xl font-bold">Incompleted Task</p>
+                        @if (request()->Is('task/incomplete'))
+                            <p class="text-xl font-bold">Incomplete Task</p>
                         @else
                             <p class="text-xl font-bold">All Task</p>
                         @endif
@@ -63,10 +63,10 @@
                                             <select class="appearance-none bg-transparent" name="status" id="status">
                                                 <option class=" text-black" value="{{ $item->status }}">{{ $item->status }}
                                                 </option>
-                                                @if ($item->status == 'Incompleted')
+                                                @if ($item->status == 'Incomplete')
                                                     <option class=" text-black" value="Completed">Completed</option>
                                                 @else
-                                                    <option class=" text-black" value="Incompleted">Incompleted</option>
+                                                    <option class=" text-black" value="Incomplete">Incomplete</option>
                                                 @endif
                                             </select>
                                             <button class="m-auto bg-blue-700 hover:bg-blue-800 p-2 text-white rounded-lg"
@@ -94,8 +94,8 @@
                         @if (request()->Is('task/completed'))
                             <p class="text-xl font-bold">Completed Task</p>
                         @else
-                            @if (request()->Is('task/incompleted'))
-                                <p class="text-xl font-bold">Incompleted Task</p>
+                            @if (request()->Is('task/incomplete'))
+                                <p class="text-xl font-bold">Incomplete Task</p>
                             @else
                                 <p class="text-xl font-bold">Detailed Task</p>
                             @endif
@@ -132,10 +132,10 @@
                                                     <option class=" text-black" value="{{ $item->status }}">
                                                         {{ $item->status }}
                                                     </option>
-                                                    @if ($item->status == 'Incompleted')
+                                                    @if ($item->status == 'Incomplete')
                                                         <option class=" text-black" value="Completed">Completed</option>
                                                     @else
-                                                        <option class=" text-black" value="Incompleted">Incompleted
+                                                        <option class=" text-black" value="Incomplete">Incomplete
                                                         </option>
                                                     @endif
                                                 </select>

@@ -20,9 +20,9 @@ class taskController extends Controller
         $data = task::where('status', '=', 'Completed')->get();
         return view('task.index', compact('data'));
     }
-    public function incompleted()
+    public function incomplete()
     {
-        $data = task::where('status', '=', 'Incompleted')->get();
+        $data = task::where('status', '=', 'Incomplete')->get();
         return view('task.index', compact('data'));
     }
 
