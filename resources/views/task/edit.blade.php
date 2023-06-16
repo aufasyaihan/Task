@@ -10,12 +10,12 @@
 
     <!-- Styles -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <title>Task | Create</title>
+    <title>Task | Edit</title>
 </head>
 
 @section('content')
     <div class="pt-5 mx-auto uppercase text-center dark:text-white text-4xl text-bold">
-        <p>tambah data</p>
+        <p>edit data</p>
     </div>
     <div class="py-5 my-5 mx-auto w-3/4 bg-slate-100 dark:bg-gray-800 rounded-md">
         <div class="w-3/4 mx-auto">

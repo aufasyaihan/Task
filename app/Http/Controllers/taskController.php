@@ -15,11 +15,6 @@ class taskController extends Controller
         $data = task::all();
         return view('task.index', compact('data'));
     }
-    public function detail(string $id)
-    {
-        $data = task::where('id', $id)->get();
-        return view('task.index', compact('data'));
-    }
     public function completed()
     {
         $data = task::where('status', '=', 'Completed')->get();
@@ -62,7 +57,8 @@ class taskController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $data = task::where('id', $id)->get();
+        return view('task.index', compact('data'));
     }
 
     /**
