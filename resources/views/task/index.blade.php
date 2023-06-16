@@ -110,86 +110,158 @@
 </head>
 @section('content')
     <div class="">
-        <div class="w-full md:w-5/6 xl:w-3/4 mx-auto mb-5">
-            <div class="py-5">
-                <a class="bg-blue-600 p-3 rounded-lg hover:bg-blue-700 text-white font-bold uppercase text-sm"
-                    href="{{ url('task/create') }}">Tambah
-                    Task</a>
-            </div>
-            @if (Session::has('success'))
-                <div class="bg-green-200 px-2 py-0.5 mt-2 rounded-lg">
-                    <div class="m-5 text-green-600 font-semibold">
-                        {{ Session::get('success') }}
+        <div class="w-full md:w-5/6 xl:w-3/4 mx-auto mb-5 mt-3">
+            @if (request()->routeIs('task.index') || request()->Is('task/completed') || request()->Is('task/incompleted'))
+                <div class="py-5">
+                    <a class="bg-blue-600 p-3 rounded-lg hover:bg-blue-700 text-white font-bold uppercase text-sm"
+                        href="{{ url('task/create') }}">Tambah
+                        Task</a>
+                </div>
+                @if (Session::has('success'))
+                    <div class="bg-green-200 px-2 py-0.5 mt-2 rounded-lg">
+                        <div class="m-5 text-green-600 font-semibold">
+                            {{ Session::get('success') }}
+                        </div>
                     </div>
-                </div>
-            @endif
-            <!--Card-->
-            <div class="my-3">
-                <div id='recipients' class="p-8 mt-6 lg:mt-0 lg:w-full rounded shadow bg-white">
+                @endif
 
-                    <table id="example" class="stripe hover" style="width:100%; padding-top: 1em;  padding-bottom: 1em;">
-                        <thead>
-                            <tr>
-                                <th data-priority="1">No</th>
-                                <th data-priority="2">Judul</th>
-                                <th data-priority="3">Deskripsi</th>
-                                <th data-priority="4">Status</th>
-                                <th data-priority="4">Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php $i = $data->firstItem(); ?>
+                <div class="mx-50 mt-2 dark:text-white">
+                    @if (request()->Is('task/completed'))
+                        <p class="text-xl font-bold">Completed Task</p>
+                    @else
+                        @if (request()->Is('task/incompleted'))
+                            <p class="text-xl font-bold">Incompleted Task</p>
+                        @else
+                            <p class="text-xl font-bold">All Task</p>
+                        @endif
+                    @endif
+
+                    <hr>
+                    <div class="grid grid-cols-4 gap-4 p-3">
+                        @foreach ($data as $item)
+                            <div class="bg-white dark:bg-slate-700 p-4 rounded-lg">
+                                <div class="grid grid-cols-4 mb-5">
+                                    <div class="col-start-1 font-bold text-lg">{{ $item->judul }}</div>
+                                    <div class="col-end-5">
+                                        <a class="underline decoration-amber-500 underline-offset-4 hover:text-amber-500"
+                                            href="{{ url('task/' . $item->id . '/edit') }}">Edit</a>
+                                    </div>
+                                    <div class="col-end-6">
+                                        <form class="m-auto" onsubmit="return confirm('Yakin akan menghapus data?')"
+                                            action="{{ url('task/' . $item->id) }}" method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button
+                                                class="underline decoration-red-500 underline-offset-4 hover:text-red-600 transition-all"
+                                                type="submit" name="submit">Delete</button>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div class="text-justify">{{ $item->deskripsi }}</div>
+                                <div class="grid grid-cols-4 mb-1">
+                                    <div class="col-end-6 text-md ">
+                                        <a class="underline decoration-lime-500 underline-offset-4 hover:text-lime-400 transition-all"
+                                            href="{{ url('task/' . $item->id) }}">Detail</a>
+                                    </div>
+                                </div>
+                                <hr class="my-2">
+                                <div class="grid grid-cols-4">
+                                    <div class="col-end-6 text-md ">
+                                        <form class="my-1" action="{{ url('task/' . $item->id . '/status') }}"
+                                            method="post">
+                                            @csrf
+                                            @method('PUT')
+                                            <select class="appearance-none bg-transparent" name="status" id="status">
+                                                <option class=" text-black" value="{{ $item->status }}">{{ $item->status }}
+                                                </option>
+                                                @if ($item->status == 'Incompleted')
+                                                    <option class=" text-black" value="Completed">Completed</option>
+                                                @else
+                                                    <option class=" text-black" value="Incompleted">Incompleted</option>
+                                                @endif
+                                            </select>
+                                            <button class="m-auto bg-blue-500 p-2 text-white rounded-lg" type="submit"
+                                                name="create" id='status'>Update
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                @else
+                    <div class="py-5">
+                        <a class="bg-red-600 p-3 rounded-lg hover:bg-red-700 text-white font-bold uppercase text-sm"
+                            href="{{ url('task') }}">Kembali</a>
+                    </div>
+                    @if (Session::has('success'))
+                        <div class="bg-green-200 px-2 py-0.5 mt-2 rounded-lg">
+                            <div class="m-5 text-green-600 font-semibold">
+                                {{ Session::get('success') }}
+                            </div>
+                        </div>
+                    @endif
+
+                    <div class="mx-50 mt-2 dark:text-white">
+                        @if (request()->Is('task/completed'))
+                            <p class="text-xl font-bold">Completed Task</p>
+                        @else
+                            @if (request()->Is('task/incompleted'))
+                                <p class="text-xl font-bold">Incompleted Task</p>
+                            @else
+                                <p class="text-xl font-bold">Detailed Task</p>
+                            @endif
+                        @endif
+
+                        <hr>
+                        <div class="bg-slate-700 w-full my-5 p-5 rounded-lg">
                             @foreach ($data as $item)
-                                <tr>
-                                    <td>{{ $i }}</td>
-                                    <td>{{ $item->judul }}</td>
-                                    <td>{{ $item->deskripsi }}</td>
-                                    <td>
-                                        {{ $item->status }}
-                                    </td>
-                                    <td>
-                                        <div class="container flex p-2 w-3/4 mx-auto">
-                                            <div class="m-auto p-2">
-                                                <a class="fa-solid fa-pen text-white bg-orange-600 p-2 rounded-lg"
-                                                    href="{{ url('task/' . $item->id . '/edit') }}"></a>
-                                            </div>
-                                            <div class="mx-auto p-2">
-                                                <form class="m-auto" onsubmit="return confirm('Yakin akan menghapus data?')"
-                                                    action="{{ url('task/' . $item->id) }}" method="POST">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button
-                                                        class="m-auto fa-solid fa-trash bg-red-600 p-2 text-white rounded-lg"
-                                                        type="submit" name="submit"></button>
-                                                </form>
-                                            </div>
+                                <div class="bg-white dark:bg-slate-700 p-4 rounded-lg">
+                                    <div class="grid grid-cols-2 mb-5">
+                                        <div class="col-start-1 font-bold text-lg ">{{ $item->judul }}</div>
+                                        <div class="col-end text-end">
+                                            <form class="m-auto" onsubmit="return confirm('Yakin akan menghapus data?')"
+                                                action="{{ url('task/' . $item->id) }}" method="POST">
+                                                <a class="underline decoration-amber-500 underline-offset-4 hover:text-amber-500"
+                                                    href="{{ url('task/' . $item->id . '/edit') }}">Edit</a>
+                                                @csrf
+                                                @method('DELETE')
+                                                <button
+                                                    class="underline decoration-red-500 underline-offset-4 hover:text-red-600 transition-all"
+                                                    type="submit" name="submit">Delete</button>
+                                            </form>
                                         </div>
-                                    </td>
-                                </tr>
-                                <?php $i++; ?>
+                                    </div>
+                                    <div class="text-justify">{{ $item->deskripsi }}</div>
+                                    <hr class="my-2">
+                                    <div class="grid grid-cols-4">
+                                        <div class="col-end-6 text-md ">
+                                            <form class="my-1" action="{{ url('task/' . $item->id . '/status') }}"
+                                                method="post">
+                                                @csrf
+                                                @method('PUT')
+                                                <select class="appearance-none bg-transparent" name="status"
+                                                    id="status">
+                                                    <option class=" text-black" value="{{ $item->status }}">
+                                                        {{ $item->status }}
+                                                    </option>
+                                                    @if ($item->status == 'Incompleted')
+                                                        <option class=" text-black" value="Completed">Completed</option>
+                                                    @else
+                                                        <option class=" text-black" value="Incompleted">Incompleted</option>
+                                                    @endif
+                                                </select>
+                                                <button class="m-auto bg-blue-500 p-2 text-white rounded-lg"
+                                                    type="submit" name="create" id='status'>Update
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
                             @endforeach
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <!--/Card-->
+                        </div>
+            @endif
         </div>
-        <!--/container-->
-        <!-- jQuery -->
-        <script type="text/javascript" src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-
-        <!--Datatables -->
-        <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
-        <script src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
-        <script>
-            $(document).ready(function() {
-
-                var table = $('#example').DataTable({
-                        responsive: true
-                    })
-                    .columns.adjust()
-                    .responsive.recalc();
-            });
-        </script>
+    </div>
     </div>
 @endsection

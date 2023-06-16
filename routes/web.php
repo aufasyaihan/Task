@@ -17,5 +17,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-
-Route::resource('task', taskController::class);
+Route::get('task/completed', [taskController::class, 'completed']);
+Route::get('task/incompleted', [taskController::class, 'incompleted']);
+Route::get('task/{id}', [taskController::class, 'detail']);
+Route::put('task/{id}/status', [taskController::class, 'updateStatus']);
+Route::resource('task', taskController::class); //ini udah Route CRUD semuanya pak

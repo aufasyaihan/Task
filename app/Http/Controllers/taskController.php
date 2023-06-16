@@ -12,7 +12,22 @@ class taskController extends Controller
      */
     public function index()
     {
-        $data = task::orderBy('id', 'asc')->paginate();
+        $data = task::all();
+        return view('task.index', compact('data'));
+    }
+    public function detail(string $id)
+    {
+        $data = task::where('id', $id)->get();
+        return view('task.index', compact('data'));
+    }
+    public function completed()
+    {
+        $data = task::where('status', '=', 'Completed')->get();
+        return view('task.index', compact('data'));
+    }
+    public function incompleted()
+    {
+        $data = task::where('status', '=', 'Incompleted')->get();
         return view('task.index', compact('data'));
     }
 
@@ -70,11 +85,20 @@ class taskController extends Controller
         ]);
         $data = [
             'judul' => $request->judul,
-            'deskripsi' => $request->deskripsi,
+            'deskripsi' => $request->deskripsi
         ];
-
         task::where('id', $id)->update($data);
         return redirect()->to('task')->with('success', 'Berhasil Mengudpate Task');
+
+    }
+    public function updateStatus(Request $request, string $id)
+    {
+        $data = [
+            'status' => $request->input('status')
+        ];
+        task::where('id', $id)->update($data);
+        return redirect()->to('task')->with('success', 'Berhasil Mengudpate Status');
+
     }
 
     /**
@@ -83,6 +107,6 @@ class taskController extends Controller
     public function destroy(string $id)
     {
         task::where('id', $id)->delete();
-        return redirect()->to('task')->with('success', 'Berhasil Menghapuss Task');
+        return redirect()->to('task')->with('success', 'Berhasil Menghapus Task');
     }
 }
